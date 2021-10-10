@@ -15,6 +15,37 @@ int getlight();
 
 int main(int argc, char *argv[] )  {  
 
+       if(argc < 2){  
+       int current_light = getlight();
+       printf("The brighness is at %d",current_light);
+       return getlight();
+   }  
+
+   if (strcmp(argv[1],"--help")==0){
+       printf("Usage:\n\nLightup [percentage] will set the light to that value ex: lightup 25\n\n");
+       printf("You can also increase the light by percentage to a positive or negetive value: ex lightup -10\n\n");
+       printf("Running lightup without any value will return the current brightness\n");
+       return getlight();
+   }
+
+    if(argv[1][0]==43 || argv[1][0]==45){
+        int dest=getlight()+atoi(argv[1])+1;
+        char sdest[10];
+        sprintf(sdest, "%d", dest);
+        setlight(sdest);
+        return getlight();
+    }
+        
+//  } else if (argv[1][0]==45) {
+//          int dest=getlight() + atoi(argv[1]);
+//                  printf("%d\n",dest);
+
+//         char sdest[10];
+//         sprintf(sdest, "%d", dest);
+//         setlight(sdest);
+//         return getlight();
+//  }
+ 
    if(argc < 2){  
        int current_light = getlight();
        printf("The brighness is at %d",current_light);
@@ -28,24 +59,26 @@ int main(int argc, char *argv[] )  {
         for (int i= current_light; i <= ToUInt(argv[1]); i++){
                     sprintf(svalue, "%d", i);
                    setlight(svalue);
-                   if (i > 100)
+                   if (i >= 100)
                         break;
-                   sleep((float)(ToUInt(argv[1])-current_light)/1000);
+                   sleep(1/(float)(ToUInt(argv[1])-current_light));
 
         }
     }
     else if (ToUInt(argv[1]) < current_light) {
             for (int i= current_light; i > ToUInt(argv[1]); i--){
-                    sprintf(svalue, "%d", i);
+                   sprintf(svalue, "%d", i);
                    setlight(svalue);
-                   if (i<0)
+                   if (i<=0)
                         break;
-                   sleep((float)(current_light-ToUInt(argv[1]))/1000);
+                   sleep(1/(float)(current_light-ToUInt(argv[1])));
 
         }
     }
 
     }
+
+    return getlight();
 }
 
 
