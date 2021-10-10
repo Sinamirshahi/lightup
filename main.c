@@ -69,7 +69,7 @@ int main(int argc, char *argv[] )  {
          out = ToUInt(line);
          printf("%0.f", (float)out/((float)max_brightness/100));
          pclose(fp);
-   return 0;
+   return (int)((float)out/((float)max_brightness/100));
 }
 }  
 
