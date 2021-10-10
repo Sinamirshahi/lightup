@@ -10,10 +10,46 @@
 
 unsigned long ToUInt(char* str);
 char* concat(const char *s1, const char *s2);
+int setlight(char *);
+int getlight();
 
 int main(int argc, char *argv[] )  {  
 
    if(argc < 2){  
+       int current_light = getlight();
+       printf("The brighness is at %d",current_light);
+   }  
+
+   else {  
+    int current_light = getlight();
+    char svalue[10];
+
+    if (ToUInt(argv[1]) >= current_light){
+        for (int i= current_light; i <= ToUInt(argv[1]); i++){
+                    sprintf(svalue, "%d", i);
+                   setlight(svalue);
+                   if (i > 100)
+                        break;
+                   sleep((float)(ToUInt(argv[1])-current_light)/1000);
+
+        }
+    }
+    else if (ToUInt(argv[1]) < current_light) {
+            for (int i= current_light; i > ToUInt(argv[1]); i--){
+                    sprintf(svalue, "%d", i);
+                   setlight(svalue);
+                   if (i<0)
+                        break;
+                   sleep((float)(current_light-ToUInt(argv[1]))/1000);
+
+        }
+    }
+
+    }
+}
+
+
+int getlight(){
 
          FILE *fp1;
         char line1[130];
@@ -33,12 +69,13 @@ int main(int argc, char *argv[] )  {
          int brightness = ToUInt(line2);
 
          float ratio;
-         printf("the brightnes is at %.0f\n", ((float)brightness / (float) max_brightness) * 100);
+         return (int)(((float)brightness / (float) max_brightness) * 100);
+}
 
-   }  
 
-   else {  
-      
+
+int setlight(char* value){
+
       // system(concat(concat("sudo enlighten ", argv[1]),"%"));
          FILE *fp1;
         char line1[130];
@@ -50,7 +87,7 @@ int main(int argc, char *argv[] )  {
 
          float percents,p;
 
-         percents = ToUInt(argv[1]);
+         percents = ToUInt(value);
          p = percents * (float)max_brightness/100;
 
          if (p>max_brightness)
@@ -67,11 +104,11 @@ int main(int argc, char *argv[] )  {
 
          int out;
          out = ToUInt(line);
-         printf("%0.f", (float)out/((float)max_brightness/100));
          pclose(fp);
    return (int)((float)out/((float)max_brightness/100));
+
 }
-}  
+
 
 char* concat(const char *s1, const char *s2)
 {
