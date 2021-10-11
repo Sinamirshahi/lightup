@@ -17,15 +17,23 @@ int main(int argc, char *argv[] )  {
 
        if(argc < 2){  
        int current_light = getlight();
-       printf("The brighness is at %d",current_light);
+       printf("The brighness is at %d\n",current_light);
        return getlight();
    }  
 
    if (strcmp(argv[1],"--help")==0){
-       printf("Usage:\n\nLightup [percentage] will set the light to that value ex: lightup 25\n\n");
-       printf("You can also increase the light by percentage to a positive or negetive value: ex lightup -10\n\n");
-       printf("Running lightup without any value will return the current brightness\n");
+       printf("\n\n\nUsage:\n\nLightup [percentage] will set the light to that value. ex: lightup 25\n\n");
+       printf("You can also increase the light by percentage to a positive or negetive value. ex: lightup -10\n\n");
+       printf("Running lightup without any value will return the current brightness\n\n");
+       printf("use --no-transition at the end to cancel smooth transition\n\n\n");
+
        return getlight();
+   }
+    int transition = 1;
+    if (argc >=3 )
+        if (strcmp(argv[2], "--no-transition")==0){
+            transition = 0;
+
    }
     if(argv[1][0]==43 || argv[1][0]==45){
         int dest=getlight()+atoi(argv[1])+1;
@@ -51,24 +59,36 @@ int main(int argc, char *argv[] )  {
    else {  
     int current_light = getlight();
     char svalue[10];
-
+    float time = 0.0;
     if (ToUInt(argv[1]) >= current_light){
         for (int i= current_light; i <= ToUInt(argv[1]); i++){
                     sprintf(svalue, "%d", i);
+
+                    if (transition == 0)
+                        sprintf(svalue, "%d", (int)ToUInt(argv[1]));
+
+
                    setlight(svalue);
-                   if (i >= 100)
+                   if (i >= 100 || transition == 0)
                         break;
-                   sleep(1/(float)(ToUInt(argv[1])-current_light));
+                    if (transition == 1)
+                        time = 1/(float)(ToUInt(argv[1])-current_light);
+                   sleep(time);
 
         }
     }
     else if (ToUInt(argv[1]) < current_light) {
             for (int i= current_light; i > ToUInt(argv[1]); i--){
                    sprintf(svalue, "%d", i);
+                   if (transition == 0)
+                        sprintf(svalue, "%d", (int)ToUInt(argv[1]));
+
                    setlight(svalue);
-                   if (i<=0)
+                   if (i<=0 || transition == 0)
                         break;
-                   sleep(1/(float)(current_light-ToUInt(argv[1])));
+                    if (transition == 1)
+                        time = 1/(float)(current_light-ToUInt(argv[1]));
+                   sleep(time);
 
         }
     }
