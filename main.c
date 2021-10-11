@@ -32,19 +32,9 @@ int main(int argc, char *argv[] )  {
         int dest=getlight()+atoi(argv[1])+1;
         char sdest[10];
         sprintf(sdest, "%d", dest);
-        setlight(sdest);
-        return getlight();
+        strcpy(argv[1], sdest);
     }
-        
-//  } else if (argv[1][0]==45) {
-//          int dest=getlight() + atoi(argv[1]);
-//                  printf("%d\n",dest);
 
-//         char sdest[10];
-//         sprintf(sdest, "%d", dest);
-//         setlight(sdest);
-//         return getlight();
-//  }
  
    if(argc < 2){  
        int current_light = getlight();
