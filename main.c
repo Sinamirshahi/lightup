@@ -27,9 +27,16 @@ int main(int argc, char *argv[] )  {
        printf("Running lightup without any value will return the current brightness\n");
        return getlight();
    }
-
     if(argv[1][0]==43 || argv[1][0]==45){
         int dest=getlight()+atoi(argv[1])+1;
+        if (dest < 0){
+            dest = 0;
+        } else if (dest>100){
+            dest = 100;
+        }
+        
+
+        
         char sdest[10];
         sprintf(sdest, "%d", dest);
         strcpy(argv[1], sdest);
@@ -139,6 +146,8 @@ char* concat(const char *s1, const char *s2)
     strcat(result, s2);
     return result;
 }
+
+
 
 unsigned long ToUInt(char* str)
 {
