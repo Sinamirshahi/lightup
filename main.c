@@ -1,7 +1,6 @@
 #include <stdio.h>  
 #include <stdlib.h>
 #include <string.h>
-
 #ifdef _WIN32
 #include <Windows.h>
 #else
@@ -102,7 +101,7 @@ int main(int argc, char *argv[] )  {
 int getlight(){
 
          FILE *fp1;
-        char line1[130];
+         char line1[130];
          fp1 = popen( "cat /sys/class/backlight/intel_backlight/max_brightness" , "r");
          fgets( line1, sizeof line1, fp1);
          line1[strcspn(line1, "\n")] = 0;
@@ -111,7 +110,7 @@ int getlight(){
 
          ////
          FILE *fp2;
-        char line2[130];
+         char line2[130];
          fp2 = popen( "cat /sys/class/backlight/intel_backlight/brightness" , "r");
          fgets( line2, sizeof line2, fp2);
          line2[strcspn(line2, "\n")] = 0;
@@ -122,12 +121,10 @@ int getlight(){
          return (int)(((float)brightness / (float) max_brightness) * 100);
 }
 
-
-
 int setlight(char* value){
 
          FILE *fp1;
-        char line1[130];
+         char line1[130];
          fp1 = popen( "cat /sys/class/backlight/intel_backlight/max_brightness" , "r");
          fgets( line1, sizeof line1, fp1);
          line1[strcspn(line1, "\n")] = 0;
@@ -145,8 +142,8 @@ int setlight(char* value){
          char spercents[10];
          sprintf(spercents, "%d", (int)p);
 
-        FILE *fp;
-        char line[130];
+         FILE *fp;
+         char line[130];
          fp = popen( concat(  concat("echo ", spercents)," | sudo tee /sys/class/backlight/intel_backlight/brightness") , "r");
          fgets( line, sizeof line, fp);
          line[strcspn(line, "\n")] = 0;
